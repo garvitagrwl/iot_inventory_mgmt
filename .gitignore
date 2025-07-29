@@ -13,6 +13,7 @@ staticfiles/
 env/
 
 # IDE files
+.idea
 .vscode/
 *.code-workspace
 
