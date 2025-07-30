@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+
+# from django.http import HttpResponse
 from .models import Student
 from django.http import HttpResponse
 
@@ -40,10 +42,33 @@ def student_reg(request):
         save_item = Student(full_name = student_name,roll_number=roll_no,college_email=email,contact_number=contact_number,password=password)
         save_item.save()
     context = {}
+    return render(request, 'base/login_register.html')
+                  
+
+def student_reg(request):
+    if request.method == 'POST':
+        email = request.POST.get('College_Email')
+        password = request.POST.get('password')
+        student_name = request.POST.get('Full_Name')
+        roll_no = request.POST.get('Roll_Number')
+        contact_number = request.POST.get('Contact_Number')
+        # print(email,roll_no)
+
+        save_item = Student(full_name = student_name,roll_number=roll_no,college_email=email,contact_number=contact_number,password=password)
+        save_item.save()
+    context = {}
     return render(request, 'base/login_register.html', context)
 
 
 def home(request):
+#     rooms = Room.objects.all()  
+#     context = {'rooms': rooms}
+    return render(request, 'base/home.html')
+
+# def room(request, pk):
+#     room = Room.objects.get(id=pk) 
+#     context = {'rooms': room}
+#     return render(request, 'base/room.html', context)     
     # rooms = Room.objects.all()
     # context = {'rooms': rooms}
     return render(request, 'base/home.html')
