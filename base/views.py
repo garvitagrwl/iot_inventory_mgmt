@@ -2,7 +2,7 @@ from django.contrib import  messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import Room
+
 # from django.http import HttpResponse
 
 # rooms = [
@@ -30,11 +30,11 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 def home(request):
-    rooms = Room.objects.all()  
-    context = {'rooms': rooms}
-    return render(request, 'base/home.html', context)
+#     rooms = Room.objects.all()  
+#     context = {'rooms': rooms}
+    return render(request, 'base/home.html')
 
-def room(request, pk):
-    room = Room.objects.get(id=pk) 
-    context = {'rooms': room}
-    return render(request, 'base/room.html', context)     
+# def room(request, pk):
+#     room = Room.objects.get(id=pk) 
+#     context = {'rooms': room}
+#     return render(request, 'base/room.html', context)     
