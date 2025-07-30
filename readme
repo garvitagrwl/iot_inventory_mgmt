@@ -11,4 +11,5 @@ commands can be used  )
 4.) NOTE: '''**** TO MAKE 5 SUPERUSERS DATA.JSON FILE IS USED ****''''
         this has to be dumped again and again when we make any changes on admin side
 
-5.)
+5.) fixed the template in main and
+    we have made new branches for each group member
