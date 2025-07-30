@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 {% extends 'base_layout.html' %}
 
 <!--cssfile-->
@@ -6,6 +7,11 @@
 <!--title  of webpage-->
 {% block page_title %}Login user{% endblock %}
 
+=======
+
+{% block content %}
+ 
+>>>>>>> Stashed changes
 <!-- <body> -->
 {% block page_content %}
 <div class="auth-container">
@@ -22,18 +28,19 @@
         {% csrf_token %}
         <input type="email" name="email" placeholder="College Email" required />
         <input type="password" name="password" placeholder="Password / OTP" required />
-        <input type="submit" value="Login"/>
+         <button type="submit">Login</button>
         <p class="switch-link" onclick="toggleForm('studentSignup')">New user? Sign up here</p>
       </form>
     </div>
-      <form id="studentSignup" class="hidden">
+      <form id="studentSignup" method="POST" action=" {%  url 'student_reg' %} " class="hidden">
+          {% csrf_token %}
         <h2>Student Sign Up</h2>
-        <input type="text" placeholder="Full Name" required />
-        <input type="text" placeholder="Roll Number" required />
-        <input type="email" placeholder="College Email" required />
-        <input type="tel" placeholder="Contact Number" required />
-        <input type="file" accept="image/*" />
-        <input type="password" placeholder="Set Password" required />
+        <input type="text" placeholder="Full Name" name="Full_Name" required />
+        <input type="text" placeholder="Roll Number" name = "Roll_Number" required />
+        <input type="email" placeholder="College Email"  name="College_Email" required />
+        <input type="tel" placeholder="Contact Number" name="Contact_Number" required />
+<!--        <input type="file" accept="image/*" />-->
+        <input type="password" placeholder="Set Password" name="password" required />
         <button type="submit">Register</button>
         <p class="switch-link" onclick="showForm('student')">Already have an account? Login</p>
       </form>
