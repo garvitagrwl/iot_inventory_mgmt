@@ -3,31 +3,22 @@ from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 
 
-class Topic(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
 
 
+from django.db import models
+class Component(models.Model):
+        CATEGORY_CHOICES = [
+            ('Microcontroller', 'Microcontroller/Board'),
+            ('Sensor', 'Sensor'),
+            ('Actuator', 'Actuator'),
+            ('Electronic', 'Electronic Component'),
+            ('Display', 'Display'),
+            ('Misc', 'Miscellaneous'),
+        ]
 
-class Room(models.Model):
-    host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True) 
-    name = models.CharField(max_length=200)
-    description = models.TextField(null=True, blank=True)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
+        name_comp = models.CharField(max_length=100)
+        quantity = models.IntegerField()
+        category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
 
-    def __str__(self):
-        return self.name
-    
-class Message(models.Model):
-    user = models.ForeignKey(User, on_delete=CASCADE)
-    room = models.ForeignKey(Room, on_delete=CASCADE)
-    body = models.TextField()
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.body[0:50]        
+        def _str_(self):
+            return f"{self.name_comp} ({self.category})"
