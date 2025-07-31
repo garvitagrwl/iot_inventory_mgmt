@@ -13,14 +13,17 @@ body {
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  width: 100%;
+  width: 80%;
   max-width: 500px;
+  margin-bottom: 90px;
+  
 }
 
 .auth-container h1 {
   text-align: center;
   margin-bottom: 1rem;
   color: #0b3d91;
+  
 }
 
 .tab-buttons {
@@ -32,7 +35,7 @@ body {
 
 .tab-buttons button {
   padding: 0.6rem 1.2rem;
-  background: #0b3d91;
+  background: #09A3A3;
   color: white;
   border: none;
   border-radius: 5px;
@@ -66,14 +69,14 @@ input[type="file"] {
 }
 
 button[type="submit"] {
-  background: #00bcd4;
+  background:  #09A3A3;
   color: white;
   padding: 0.7rem;
   border: none;
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  /* transition: background 0.3s ease; */
 }
 
 button[type="submit"]:hover {
@@ -89,4 +92,25 @@ button[type="submit"]:hover {
 
 .hidden {
   display: none;
+}
+.error-message {
+  color: rgb(249, 2, 2);
+  font-weight: bold;
+  margin-bottom: 0.75em;
+  font-size: 1.2em; 
+  display: block;
+}
+
+.message-container {
+  margin-bottom: 15px;
+}
+.test-header{
+  background-color: rgb(28, 36, 43);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 500px;
+  
 }

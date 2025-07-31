@@ -1,6 +1,30 @@
 from django.contrib import admin
+<<<<<<< HEAD
+from .models import Component, IssueRecord
 
-# Register your models here.
-from .models import Student
+@admin.register(Component)
+class ComponentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'quantity', 'status', 'date_of_purchase')
+    list_filter = ('category',)
+    search_fields = ('name',)
 
+    def status(self, obj):
+        return obj.status
+
+admin.site.register(IssueRecord)
+=======
+from .models import Component, IssueRecord, Student
+
+@admin.register(Component)
+class ComponentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'quantity', 'status', 'date_of_purchase')
+    list_filter = ('category',)
+    search_fields = ('name',)
+
+    def status(self, obj):
+        return obj.status
+
+admin.site.register(IssueRecord)
 admin.site.register(Student)
+
+>>>>>>> garvit
