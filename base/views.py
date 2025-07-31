@@ -26,16 +26,6 @@ def loginpage(request):
     return render(request, 'base/login_register.html',context)
 
 def home(request):
-<<<<<<< HEAD
-#     rooms = Room.objects.all()  
-#     context = {'rooms': rooms}
-    return render(request, 'base/home.html')
-
-# def room(request, pk):
-#     room = Room.objects.get(id=pk) 
-#     context = {'rooms': room}
-#     return render(request, 'base/room.html', context)     
-=======
     return render(request, 'base/home.html')
 def student_reg(request):
     if request.method == 'POST':
@@ -70,4 +60,3 @@ def admindashboard(request):
 def student_logout(request):
     request.session.flush()
     return redirect('login')
->>>>>>> garvit
