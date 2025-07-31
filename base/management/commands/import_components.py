@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # import csv
 # from django.core.management.base import BaseCommand
 # from base.models import Component  # Replace with your actual app name
@@ -25,6 +26,9 @@
 #                     self.stdout.write(self.style.ERROR(str(e)))
 
 #         self.stdout.write(self.style.SUCCESS('All valid components imported!'))
+=======
+
+>>>>>>> garvit
 import csv
 from django.core.management.base import BaseCommand
 from base.models import Component  # Replace with your actual app name

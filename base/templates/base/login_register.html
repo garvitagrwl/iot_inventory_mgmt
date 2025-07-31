@@ -1,132 +1,26 @@
-<div>
-{% extends 'main.html' %}
-</div>
-{% block content %}
+
+{% extends 'base_layout.html' %}
+{% load static %}
+{% block css_filename %}base/login_page.css{% endblock %}
+
+<!--title  of webpage-->
+{% block page_title %}Login user{% endblock %}
+
+
+
  
 <!-- <body> -->
- <style>body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f2f6ff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-}
+{% block page_content %}
+  <div class="logo-container" style="text-align: center; margin-bottom: 20px; margin-right: 25px;">
+    <a href="/">
+        <img src="{% static 'base/images/skitlogo.png' %}" alt="Logo" style="width: 80px;height: auto;">
+    </a>
+    </div>
 
-.auth-container {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;
-}
-
-.auth-container h1 {
-  text-align: center;
-  margin-bottom: 1rem;
-  color: #0b3d91;
-}
-
-.tab-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.tab-buttons button {
-  padding: 0.6rem 1.2rem;
-  background: #0b3d91;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.form-section {
-  margin-top: 1rem;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-form h2 {
-  text-align: center;
-  color: #333;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="tel"],
-input[type="file"] {
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-button[type="submit"] {
-  background: #00bcd4;
-  color: white;
-  padding: 0.7rem;
-  border: none;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button[type="submit"]:hover {
-  background: #0097a7;
-}
-
-.switch-link {
-  font-size: 0.9rem;
-  color: #0b3d91;
-  cursor: pointer;
-  text-align: center;
-}
-
-.hidden {
-  display: none;
-
-} 
-</style> 
-<script>
-    function showForm(role) {
-      document.getElementById('student').classList.add('hidden');
-      document.getElementById('faculty').classList.add('hidden');
-      document.getElementById(role).classList.remove('hidden');
-      document.getElementById('studentSignup').classList.add('hidden');
-      document.getElementById('facultySignup').classList.add('hidden');
-    }
-
-    // function toggleForm(formId) {
-    //   document.getElementById('studentSignup').classList.add('hidden');
-    //   document.getElementById('facultySignup').classList.add('hidden');
-    //   if (formId) document.getElementById(formId).classList.remove('hidden');
-    // }
-    function toggleForm(formId) {
-  document.getElementById('student').classList.add('hidden');
-  document.getElementById('faculty').classList.add('hidden');
-  document.getElementById('studentSignup').classList.add('hidden');
-  document.getElementById('facultySignup').classList.add('hidden');
-  
-  if (formId) document.getElementById(formId).classList.remove('hidden');
-}
-
-    
-    showForm('student');
-  </script>
-<div class="auth-container">
-    <h1>IoT Lab Portal</h1>
-
+  <div class="test-header">
+    <h1>Welcome to IoT Lab Portal</h1>
+    </div>
+    <div class="auth-container">
     <div class="tab-buttons">
       <button onclick="showForm('student')">Student</button>
       <button onclick="showForm('faculty')">Faculty</button>
@@ -134,30 +28,39 @@ button[type="submit"]:hover {
 
     <div id="student" class="form-section">
       <h2>Student Login</h2>
+{% if messages %}
+  <div class="message-container">
+    {% for message in messages %}
+      <p class="error-message">{{ message }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
       <form method="POST" action="">
         {% csrf_token %}
         <input type="email" name="email" placeholder="College Email" required />
         <input type="password" name="password" placeholder="Password / OTP" required />
-        <input type="submit" value="Login"/>
+         <button type="submit">Login</button>
         <p class="switch-link" onclick="toggleForm('studentSignup')">New user? Sign up here</p>
       </form>
     </div>
-      <form id="studentSignup" class="hidden">
+      <form id="studentSignup" method="POST" action=" {%  url 'student_reg' %} " class="hidden">
+          {% csrf_token %}
         <h2>Student Sign Up</h2>
-        <input type="text" placeholder="Full Name" required />
-        <input type="text" placeholder="Roll Number" required />
-        <input type="email" placeholder="College Email" required />
-        <input type="tel" placeholder="Contact Number" required />
-        <input type="file" accept="image/*" />
-        <input type="password" placeholder="Set Password" required />
+        <input type="text" placeholder="Full Name" name="Full_Name" required />
+        <input type="text" placeholder="Roll Number" name = "Roll_Number" required />
+        <input type="email" placeholder="College Email"  name="College_Email" required />
+        <input type="tel" placeholder="Contact Number" name="Contact_Number" required />
+<!--        <input type="file" accept="image/*" />-->
+        <input type="password" placeholder="Set Password" name="password" required />
         <button type="submit">Register</button>
         <p class="switch-link" onclick="showForm('student')">Already have an account? Login</p>
       </form>
     
 
-    <div id="faculty" class="form-section hidden">
+    <div id="faculty"  class="form-section hidden">
       <h2>Faculty Login</h2>
-      <form>
+      <form method="POST" action="{% url 'admindash' %}">
+        {% csrf_token %}
         <input type="email" placeholder="Faculty Email" required />
         <input type="password" placeholder="Password" required />
         <button type="submit">Login</button>
@@ -177,6 +80,30 @@ button[type="submit"]:hover {
     
   </div>
 
- 
-    <!-- </body> -->
-{% endblock content %}
+<script>
+    function showForm(role) {
+      document.getElementById('student').classList.add('hidden');
+      document.getElementById('faculty').classList.add('hidden');
+      document.getElementById(role).classList.remove('hidden');
+      document.getElementById('studentSignup').classList.add('hidden');
+      document.getElementById('facultySignup').classList.add('hidden');
+    }
+
+    // function toggleForm(formId) {
+    //   document.getElementById('studentSignup').classList.add('hidden');
+    //   document.getElementById('facultySignup').classList.add('hidden');
+    //   if (formId) document.getElementById(formId).classList.remove('hidden');
+    // }
+    function toggleForm(formId) {
+  document.getElementById('student').classList.add('hidden');
+  document.getElementById('faculty').classList.add('hidden');
+  document.getElementById('studentSignup').classList.add('hidden');
+  document.getElementById('facultySignup').classList.add('hidden');
+
+  if (formId) document.getElementById(formId).classList.remove('hidden');
+}
+
+
+    showForm('student');
+  </script>
+{% endblock %}
