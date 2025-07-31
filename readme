@@ -1,0 +1,14 @@
+''' THIS IS COMPLETE GUIDE FOR THE PROJECT AND ITS DETAILS '''
+
+1.) 'teststudy' is the name of project
+    'base' is our app
+
+2.) 'base_layout.html' give the base layout of any html page
+
+3.) 'requirements.txt'  is available for sharing same resuorces (pip freeze, pip install -r etc
+commands can be used  )
+
+4.) NOTE: '''**** TO MAKE 5 SUPERUSERS DATA.JSON FILE IS USED ****''''
+        this has to be dumped again and again when we make any changes on admin side
+
+5.)
