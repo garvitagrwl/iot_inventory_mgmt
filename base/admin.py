@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Component, IssueRecord
+from .models import Component, IssueRecord, Student
 
 @admin.register(Component)
 class ComponentAdmin(admin.ModelAdmin):
@@ -11,6 +11,5 @@ class ComponentAdmin(admin.ModelAdmin):
         return obj.status
 
 admin.site.register(IssueRecord)
-
-
+admin.site.register(Student)
 

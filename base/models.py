@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 from django.db import models
+from django.contrib.auth.hashers import make_password, check_password
 
 class Component(models.Model):
     CATEGORY_CHOICES = [
@@ -21,6 +22,8 @@ class Component(models.Model):
     @property
     def status(self):
         return "Empty" if self.quantity == 0 else "Present"
+    def __str__(self):
+        return f"{self.name} ({self.category})"
 
 class Student(models.Model):
     full_name = models.CharField(max_length=100)
@@ -28,10 +31,14 @@ class Student(models.Model):
     college_email = models.EmailField(unique=True)
     contact_number = models.CharField(max_length=15)
     password =  models.CharField(max_length=15,blank=True)
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
 
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
 
     def __str__(self):
-        return f"{self.name} ({self.category})"
+     return f"{self.full_name} ({self.roll_number})"
 
 class IssueRecord(models.Model):
     student_name = models.CharField(max_length=100)  #  ForeignKey to a User model

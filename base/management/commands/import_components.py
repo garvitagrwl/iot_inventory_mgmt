@@ -1,30 +1,4 @@
-# import csv
-# from django.core.management.base import BaseCommand
-# from base.models import Component  # Replace with your actual app name
-# from datetime import datetime
 
-# class Command(BaseCommand):
-#     help = 'Import components from CSV'
-
-#     def handle(self, *args, **kwargs):
-#         with open('components_2.csv','r', encoding='utf-8', newline='') as csvfile:
-#             reader = csv.DictReader(csvfile)
-#             for row in reader:
-#                 try:
-#                     quantity = int(row['quantity'])
-
-#                     Component.objects.create(
-#                         name=row['name'],
-#                         quantity=quantity,
-#                         category=row['category'],
-#                         date_of_purchase=datetime.strptime(row['date_of_purchase'], '%Y-%m-%d').date()
-#                     )
-#                     self.stdout.write(self.style.SUCCESS(f"Imported: {row['name']}"))
-#                 except Exception as e:
-#                     self.stdout.write(self.style.ERROR(f"Error importing row: {row}"))
-#                     self.stdout.write(self.style.ERROR(str(e)))
-
-#         self.stdout.write(self.style.SUCCESS('All valid components imported!'))
 import csv
 from django.core.management.base import BaseCommand
 from base.models import Component  # Replace with your actual app name
