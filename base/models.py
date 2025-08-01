@@ -48,7 +48,7 @@ class Student(models.Model):
     roll_number = models.CharField(max_length=50, unique=True)
     college_email = models.EmailField(unique=True)
     contact_number = models.CharField(max_length=15)
-    password =  models.CharField(max_length=15,blank=True)
+    password = models.CharField(max_length=128) 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
