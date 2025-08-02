@@ -58,29 +58,7 @@ def student_reg(request):
 
     return render(request, 'base/login_register.html')
 
-# def student_reg(request):
-#     if request.method == 'POST':
-#         email = request.POST.get('College_Email')
-#         password = request.POST.get('password')
-#         student_name = request.POST.get('Full_Name')
-#         roll_no = request.POST.get('Roll_Number')
-#         contact_number = request.POST.get('Contact_Number')
-#         # print(email,roll_no)
 
-#         student = Student(
-#             full_name = student_name,
-#             roll_number=roll_no,
-#             college_email=email,
-#             contact_number=contact_number,
-#            )
-#         student.set_password(password) 
-#         student.save()
-#     context = {}
-#     return render(request, 'base/login_register.html', context)
-# def studentdashboard(request):
-#     if request.method == 'POST':
-#         return render(request,'base/studentdashboard.html')
-#     return HttpResponse("not a post emthi")
 @student_login_required
 def studentdashboard(request):
     return render(request, 'base/studentdashboard.html')

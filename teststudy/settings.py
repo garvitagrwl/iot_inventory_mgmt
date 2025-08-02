@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',  
+    'student_dash.apps.StudentDashConfig',
 ]
 
 MIDDLEWARE = [
