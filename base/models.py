@@ -33,6 +33,10 @@ class IssueRecord(models.Model):
     issue_date = models.DateField(auto_now_add=True)
     return_date = models.DateField(null=True, blank=True)  # can be updated later
 
+    #to be done by vaibhav g.
+    #add 2 status columns ,change student_name to bid email data from student table usse bid aajaye
+    #dynamic cloumns
+
     @property
     def status(self):
         if self.return_date:
