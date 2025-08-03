@@ -1,12 +1,13 @@
 from django.contrib import  messages
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-# from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.models import User
+from django.shortcuts import render, redirect,get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from .decorators import student_login_required
 from django.contrib.auth.hashers import make_password, check_password
+from .models import Student , Component
 
-from .models import Student
+
 def loginpage(request):
     if request.method == 'POST':
         
@@ -70,3 +71,15 @@ def admindashboard(request):
 def student_logout(request):
     request.session.flush()
     return redirect('login')
+
+def components(request):
+    categories = dict(Component.CATEGORY_CHOICES)
+    return render(request, 'base/components.html', {'categories': categories})
+
+def category_items(request, category_key):
+    components = Component.objects.filter(category=category_key)
+    category_name = dict(Component.CATEGORY_CHOICES).get(category_key, "Unknown")
+    return render(request, 'base/category_items.html', {
+        'components': components,
+        'category_name': category_name,
+    })
