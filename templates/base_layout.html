@@ -6,10 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+     
 <!--    since apan BASE LAYOUT MEIN LIKHRE  VARIABLE LELO CSS_FILENAME-->
 <!--    THEN VIEWS.PY MEIN PASS KARNA-->
 
      <link rel="stylesheet" href="{% static '' %}{% block css_filename %}{% endblock %}">
+     {% block extra_css_files %}{% endblock %}
 
     <title>{%block page_title %}{%endblock%}</title>
 
