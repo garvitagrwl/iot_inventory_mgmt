@@ -10,10 +10,9 @@ from .models import Student , Component
 
 def loginpage(request):
     if request.method == 'POST':
-        
         email = request.POST.get('email')
         password = request.POST.get('password')
-        
+
         try:
             student = Student.objects.get(college_email=email)
         except Student.DoesNotExist:
@@ -21,13 +20,12 @@ def loginpage(request):
             return render(request, 'base/login_register.html')
 
         if check_password(password, student.password):
-            request.session['student_id'] = student.id  # custom session
-
-            return render(request, 'base/studentdashboard.html', {'student': student})
+            request.session['student_id'] = student.id  
+            return redirect('studentdash')  
         else:
             messages.error(request, "Invalid email or password.")
-    context = {}
-    return render(request, 'base/login_register.html',context)
+
+    return render(request, 'base/login_register.html')
 
 def home(request):
     return render(request, 'base/home.html')
@@ -72,14 +70,3 @@ def student_logout(request):
     request.session.flush()
     return redirect('login')
 
-def components(request):
-    categories = dict(Component.CATEGORY_CHOICES)
-    return render(request, 'base/components.html', {'categories': categories})
-
-def category_items(request, category_key):
-    components = Component.objects.filter(category=category_key)
-    category_name = dict(Component.CATEGORY_CHOICES).get(category_key, "Unknown")
-    return render(request, 'base/category_items.html', {
-        'components': components,
-        'category_name': category_name,
-    })

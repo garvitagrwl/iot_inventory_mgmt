@@ -1,0 +1,249 @@
+{% extends 'base/studentdashboard.html' %}
+{% load static %}
+
+{% block extra_css_files %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'request.css' %}">
+{% endblock %}
+
+{% block page_title %}Components{% endblock %}
+
+{% block dashboard_content %}
+<style>
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .header-container h3 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 0 20px;
+        
+    }
+
+    .card {
+        width: 220px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        background-color: #fff;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+    .card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .card h3 {
+        margin: 15px 0;
+        font-size: 20px;
+        color: #333;
+    }
+
+    @media (max-width: 768px) {
+        .card-container {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+     .right-sidebar {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 350px;
+    height: 100%;
+    background: white;
+    box-shadow: -3px 0 6px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: right 0.3s ease-in-out;
+}
+
+.right-sidebar.open {
+    right: 0;
+}
+
+.request-btn-top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    
+</style>
+
+<div class="header-container">
+    <h3>Components</h3>
+</div>
+<button id="toggleSidebarBtn" class="request-btn-top-right" style="position: fixed; top: 20px; right: 20px; z-index: 1001;">
+    Request Components
+</button>
+
+<div class="card-container">
+    <div class="card">
+        <a href="{% url 'dash:category_items' 'Microcontroller' %}" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/microcontroller.jpg' %}" alt="Microcontrollers">
+            <h3>Microcontrollers</h3>
+        </a>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'dash:category_items' 'Sensor' %}" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/sensors.jpg' %}" alt="Sensors">
+            <h3>Sensors</h3>
+        </a>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'dash:category_items' 'Actuator' %}" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/actuators.png' %}" alt="Actuators">
+            <h3>Actuators</h3>
+        </a>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'dash:category_items' 'Electronic' %}" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/el.jpg' %}" alt="Electric Components">
+            <h3>Electric Components</h3>
+        </a>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'dash:category_items' 'Display' %}" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/display.webp' %}" alt="Displays">
+            <h3>Displays</h3>
+        </a>
+    </div>
+
+    <div class="card">
+        <a href="{% url 'dash:category_items' 'Misc' %}" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/misc.jpg' %}" alt="Miscellaneous">
+            <h3>Miscellaneous</h3>
+        </a>
+    </div>
+</div>
+
+<div id="requestSidebar" class="right-sidebar">
+    <div class="sidebar-header">
+        <h4>Selected Components</h4>
+        <button id="closeSidebar">&times;</button>
+    </div>
+    <form id="componentRequestForm" method="POST" action="{% url 'dash:submit_request' %}">
+        {% csrf_token %}
+        <div id="form-hidden-fields"></div>
+        <div id="selected-components-list">
+            <p>No components selected yet.</p>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Confirm Request</button>
+    </form>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const shouldClear = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('clearLocalStorage='));
+
+    if (shouldClear) {
+      // Clear the selected items from localStorage
+      localStorage.removeItem('selectedComponents');
+      
+      // Delete the cookie so it doesn’t trigger again
+      document.cookie = "clearLocalStorage=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      
+      // Optionally reload or update the UI
+      location.reload(); // OR update the DOM manually
+    }
+  });
+
+  document.getElementById('closeSidebar').addEventListener('click', function () {
+    document.getElementById('requestSidebar').classList.remove('open');
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('toggleSidebarBtn');
+    const sidebar = document.getElementById('requestSidebar');
+    const closeBtn = document.getElementById('closeSidebar');
+    const componentList = document.getElementById('selected-components-list');
+    const formHiddenFields = document.getElementById('form-hidden-fields');
+
+    toggleBtn.addEventListener('click', function () {
+        sidebar.classList.add('open');
+        toggleBtn.style.display = 'none';
+        renderSelectedComponents();
+    });
+
+    closeBtn.addEventListener('click', function () {
+        sidebar.classList.remove('open');
+        toggleBtn.style.display = 'block';
+    });
+
+    function renderSelectedComponents() {
+        const selected = JSON.parse(localStorage.getItem('selectedComponents') || '[]');
+        componentList.innerHTML = '';
+        formHiddenFields.innerHTML = '';
+
+        if (selected.length === 0) {
+            componentList.innerHTML = '<p>No components selected.</p>';
+            return;
+        }
+
+        selected.forEach((item, index) => {
+            const name = item.name || `Component ID: ${item.id}`;
+            const quantity = item.quantity || 1;
+
+            componentList.innerHTML += `
+                <div class="mb-2 border-bottom pb-2">
+                    <p><strong>${name}</strong> -  ${quantity}</p>
+                </div>
+            `;
+
+            formHiddenFields.innerHTML += `
+                <input type="hidden" name="component_ids[]" value="${item.id}">
+                <input type="hidden" name="quantities[]" value="${quantity}">
+            `;
+        });
+    }
+
+    // Clear localStorage if cookie set by Django
+    if (document.cookie.includes("clearLocalStorage=true")) {
+        localStorage.removeItem("selectedComponents");
+        document.cookie = "clearLocalStorage=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+});
+</script>
+{% endblock %}

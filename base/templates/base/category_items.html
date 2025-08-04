@@ -1,15 +1,15 @@
-{% extends 'base_layout.html' %}
+<!-- {% extends 'base_layout.html' %}
 {% block page_title %}Components Items{% endblock %}
 
 {% block page_content %}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;padding: 20px;">
   <h3 style="margin: 10px 0;">Components in {{ category_name }}</h3>
   <input type="text" id="searchInput" placeholder="Search component..." onkeyup="filterComponents()" style="width: 300px; padding: 8px;">
-</div>
+</div> -->
 
 
 <!-- Components List -->
-<div id="componentList" style="width: 95%; margin: auto;">
+<!-- <div id="componentList" style="width: 95%; margin: auto;">
   {% for item in components %}
     <div class="component-item"
          data-name="{{ item.name|lower }}"
@@ -28,15 +28,15 @@
       </div>
     </div>
   {% endfor %}
-</div>
+</div> -->
 
 <!-- No Match Message -->
-<div id="noResult" style="text-align:center; display:none; color:gray; margin-top: 20px;">
+<!-- <div id="noResult" style="text-align:center; display:none; color:gray; margin-top: 20px;">
   No matching components found.
-</div>
+</div> -->
 
 <!-- JS -->
-<script>
+<!-- <script>
 function filterComponents() {
   const search = document.getElementById("searchInput").value.toLowerCase();
   const items = document.getElementsByClassName("component-item");
@@ -80,5 +80,5 @@ function decrease(id, maxQty) {
     container.innerHTML = `<button onclick="startQuantityControl(${id}, ${maxQty})">Add</button>`;
   }
 }
-</script>
-{% endblock %}
+</script> -->
+<!-- {% endblock %} -->
