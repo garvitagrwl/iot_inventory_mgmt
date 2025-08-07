@@ -1,112 +1,42 @@
-{% extends 'base/studentdashboard.html' %}
+{% extends 'base_layout.html' %}
 {% load static %}
 
+
+{% comment %}
+{ % extends 'base/studentdashboard.html' % }
+{% endcomment %}
+
+
+<!--added a comment-->
+{% comment "directly link to base layout not double linking"%}
 {% block extra_css_files %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'request.css' %}">
+<link rel="stylesheet" href="{% static 'request_component.css' %}">
 {% endblock %}
+{% endcomment %}
+
 
 {% block page_title %}Components{% endblock %}
 
-{% block dashboard_content %}
-<style>
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        padding: 20px;
-    }
+{% block extra_css_files %}
+<link rel="stylesheet" href="{% static 'student_dash/request_component.css' %}">
+{% endblock %}
 
-    .header-container h3 {
-        margin: 0;
-        font-size: 30px;
-        font-weight: 600;
-        color: #333;
-    }
+{% block js_filename %}student_dash/js/request_component.js{% endblock %}
 
-    .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
-        padding: 0 20px;
-        
-    }
+{% block page_content %}
 
-    .card {
-        width: 220px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-        background-color: #fff;
-    }
 
-    .card:hover {
-        transform: scale(1.03);
-    }
+<div class="dashboard-container">
+<aside class="sidebar">
+      <h2>IoT Lab</h2>
+      <ul>
+        <li><a href="{% url 'studentdash' %}"> back to Dashboard</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      </ul>
+</aside>
 
-    .card img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-    }
-
-    .card h3 {
-        margin: 15px 0;
-        font-size: 20px;
-        color: #333;
-    }
-
-    @media (max-width: 768px) {
-        .card-container {
-            flex-direction: column;
-            align-items: center;
-        }
-    }
-     .right-sidebar {
-    position: fixed;
-    top: 0;
-    right: -350px;
-    width: 350px;
-    height: 100%;
-    background: white;
-    box-shadow: -3px 0 6px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    overflow-y: auto;
-    z-index: 1000;
-    transition: right 0.3s ease-in-out;
-}
-
-.right-sidebar.open {
-    right: 0;
-}
-
-.request-btn-top-right {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1100;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-.sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-    
-</style>
-
+    <main class="main-content">
 <div class="header-container">
     <h3>Components</h3>
 </div>
@@ -117,42 +47,43 @@
 <div class="card-container">
     <div class="card">
         <a href="{% url 'dash:category_items' 'Microcontroller' %}" style="text-decoration: none; color: inherit;">
-            <img src="{% static 'images/microcontroller.jpg' %}" alt="Microcontrollers">
+            <img src="{% static 'student_dash/images/microcontroller.jpg' %}"
+                 alt="Microcontrollers">
             <h3>Microcontrollers</h3>
         </a>
     </div>
 
     <div class="card">
         <a href="{% url 'dash:category_items' 'Sensor' %}" style="text-decoration: none; color: inherit;">
-            <img src="{% static 'images/sensors.jpg' %}" alt="Sensors">
+            <img src="{% static 'student_dash/images/sensors.jpg' %}" alt="Sensors">
             <h3>Sensors</h3>
         </a>
     </div>
 
     <div class="card">
         <a href="{% url 'dash:category_items' 'Actuator' %}" style="text-decoration: none; color: inherit;">
-            <img src="{% static 'images/actuators.png' %}" alt="Actuators">
+            <img src="{% static 'student_dash/images/actuators.png' %}" alt="Actuators">
             <h3>Actuators</h3>
         </a>
     </div>
 
     <div class="card">
         <a href="{% url 'dash:category_items' 'Electronic' %}" style="text-decoration: none; color: inherit;">
-            <img src="{% static 'images/el.jpg' %}" alt="Electric Components">
+            <img src="{% static 'student_dash/images/el.jpg' %}" alt="Electric Components">
             <h3>Electric Components</h3>
         </a>
     </div>
 
     <div class="card">
         <a href="{% url 'dash:category_items' 'Display' %}" style="text-decoration: none; color: inherit;">
-            <img src="{% static 'images/display.webp' %}" alt="Displays">
+            <img src="{% static 'student_dash/images/display.webp' %}" alt="Displays">
             <h3>Displays</h3>
         </a>
     </div>
 
     <div class="card">
         <a href="{% url 'dash:category_items' 'Misc' %}" style="text-decoration: none; color: inherit;">
-            <img src="{% static 'images/misc.jpg' %}" alt="Miscellaneous">
+            <img src="{% static 'student_dash/images/misc.jpg' %}" alt="Miscellaneous">
             <h3>Miscellaneous</h3>
         </a>
     </div>
@@ -172,78 +103,6 @@
         <button type="submit" class="btn btn-primary mt-3">Confirm Request</button>
     </form>
 </div>
-
-<script>
-window.addEventListener('DOMContentLoaded', () => {
-    const shouldClear = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('clearLocalStorage='));
-
-    if (shouldClear) {
-      // Clear the selected items from localStorage
-      localStorage.removeItem('selectedComponents');
-      
-      // Delete the cookie so it doesn’t trigger again
-      document.cookie = "clearLocalStorage=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      
-      // Optionally reload or update the UI
-      location.reload(); // OR update the DOM manually
-    }
-  });
-
-  document.getElementById('closeSidebar').addEventListener('click', function () {
-    document.getElementById('requestSidebar').classList.remove('open');
-  });
-  document.addEventListener('DOMContentLoaded', function () {
-    const toggleBtn = document.getElementById('toggleSidebarBtn');
-    const sidebar = document.getElementById('requestSidebar');
-    const closeBtn = document.getElementById('closeSidebar');
-    const componentList = document.getElementById('selected-components-list');
-    const formHiddenFields = document.getElementById('form-hidden-fields');
-
-    toggleBtn.addEventListener('click', function () {
-        sidebar.classList.add('open');
-        toggleBtn.style.display = 'none';
-        renderSelectedComponents();
-    });
-
-    closeBtn.addEventListener('click', function () {
-        sidebar.classList.remove('open');
-        toggleBtn.style.display = 'block';
-    });
-
-    function renderSelectedComponents() {
-        const selected = JSON.parse(localStorage.getItem('selectedComponents') || '[]');
-        componentList.innerHTML = '';
-        formHiddenFields.innerHTML = '';
-
-        if (selected.length === 0) {
-            componentList.innerHTML = '<p>No components selected.</p>';
-            return;
-        }
-
-        selected.forEach((item, index) => {
-            const name = item.name || `Component ID: ${item.id}`;
-            const quantity = item.quantity || 1;
-
-            componentList.innerHTML += `
-                <div class="mb-2 border-bottom pb-2">
-                    <p><strong>${name}</strong> -  ${quantity}</p>
-                </div>
-            `;
-
-            formHiddenFields.innerHTML += `
-                <input type="hidden" name="component_ids[]" value="${item.id}">
-                <input type="hidden" name="quantities[]" value="${quantity}">
-            `;
-        });
-    }
-
-    // Clear localStorage if cookie set by Django
-    if (document.cookie.includes("clearLocalStorage=true")) {
-        localStorage.removeItem("selectedComponents");
-        document.cookie = "clearLocalStorage=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    }
-});
-</script>
+</main>
+    </div>
 {% endblock %}

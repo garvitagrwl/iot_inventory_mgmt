@@ -20,8 +20,9 @@ def loginpage(request):
             return render(request, 'base/login_register.html')
 
         if check_password(password, student.password):
-            request.session['student_id'] = student.id  
-            return redirect('studentdash')  
+            request.session['student_id'] = student.id
+            return render(request, 'base/studentdashboard.html',{'student':student})
+
         else:
             messages.error(request, "Invalid email or password.")
 
@@ -29,6 +30,8 @@ def loginpage(request):
 
 def home(request):
     return render(request, 'base/home.html')
+
+
 def student_reg(request):
     if request.method == 'POST' and request.POST.get('form_type') == 'signup':
         email = request.POST.get('College_Email')
@@ -62,10 +65,14 @@ def student_reg(request):
 @student_login_required
 def studentdashboard(request):
     return render(request, 'base/studentdashboard.html')
-def admindashboard(request):
-    if request.method == 'POST':
-        return render(request, 'base/admin-dashboard.html')
-    return HttpResponse("not a post emthi from admin")
+
+
+# def admindashboard(request):
+#     if request.method == 'POST':
+#         return render(request, 'base/admin-dashboard.html')
+#     return HttpResponse("not a post emthi from admin")
+
+
 def student_logout(request):
     request.session.flush()
     return redirect('login')

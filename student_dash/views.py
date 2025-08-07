@@ -1,12 +1,14 @@
 from django.contrib import  messages
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 # from django.contrib.auth import authenticate, login, logout
 # from django.contrib.auth.models import User
 from base.decorators import student_login_required
 from django.contrib.auth.hashers import make_password, check_password
 from base.models import Student, Component
 from student_dash.models import StudentIssueLog
+from django.utils.timezone import now
+from django.views.decorators.http import require_POST
 
 
 @student_login_required
@@ -17,6 +19,8 @@ def inventory_request(request):
 def components(request):
     categories = dict(Component.CATEGORY_CHOICES)
     return render(request, 'student_dash/inventory_request_view.html', {'categories': categories})
+
+
 @student_login_required
 def category_items(request, category_key):
     components = Component.objects.filter(category=category_key)
@@ -39,6 +43,8 @@ def submit_request(request):
             return HttpResponseBadRequest("Mismatched data")
 
         student = request.student
+        # print(type(student))
+        # print(student.full_name,student.roll_number)
 
         for comp_id, qty in zip(component_ids, quantities):
             try:
@@ -48,8 +54,10 @@ def submit_request(request):
 
             StudentIssueLog.objects.create(
                 student=student,
+                studentid = student,
                 component=component,
                 quantity_issued=int(qty),
+                form_date = now().date(),
                 status_from_teacher='Pending',
                 status_from_student='Requested',  # or leave default
             )
@@ -57,3 +65,55 @@ def submit_request(request):
         response = redirect('dash:components')
         response.set_cookie('clearLocalStorage', 'true')  # instruct frontend to clear
         return response
+
+
+#by vaibhav malav
+def admindashboard(request):
+    requests_distinct = (StudentIssueLog.objects.filter(status_from_student = "Requested").values(
+        'student__full_name','student__roll_number','form_date','component__name',
+        'quantity_issued').order_by('-form_date'))
+                         # .distinct())
+    # print(requests_distinct)
+    # if request.method == 'POST':
+    return render(request, 'teacher_dash/teacher_dashboard.html',
+                      {'requests_distinct':requests_distinct})
+    # return HttpResponse("not a post emthi from admin")
+
+
+@require_POST
+def update_status(request):
+    roll_number = request.POST.get("roll_number")
+    form_date = request.POST.get("form_date")
+    component_name = request.POST.get("component_name")
+    action = request.POST.get("action")
+    print("data is :",form_date,action,component_name,roll_number)
+
+
+    try:
+        log = StudentIssueLog.objects.get(
+            student__roll_number=roll_number,
+            component__name=component_name,
+            form_date=form_date
+        )
+        print("matching records :",log)
+        if action == "approve":
+            log.status_from_teacher = "Approved"
+            log.status_from_student = "Issued"
+            log.issue_date = now().date()
+
+
+        elif action == "reject":
+            log.status_from_teacher = "Rejected"
+            log.status_from_student = "Rejectedbyteacher"
+
+        log.save()
+        return redirect('dash:admindash')
+
+    except StudentIssueLog.DoesNotExist:
+        return HttpResponse("Log not found", status=404)
+
+def approved_requests(request):
+    return render(request,"teacher_dash/approved.html")
+
+def rejected_requests(request):
+    return render(request,"teacher_dash/rejected.html")

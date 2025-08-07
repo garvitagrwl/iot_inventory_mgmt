@@ -128,6 +128,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     'base/static',
+    'student_dash/static',
                     ]
 
 # Default primary key field type
