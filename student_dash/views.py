@@ -9,6 +9,7 @@ from base.models import Student, Component
 from student_dash.models import StudentIssueLog
 from django.utils.timezone import now
 from django.views.decorators.http import require_POST
+from collections import defaultdict
 
 
 @student_login_required
@@ -71,13 +72,25 @@ def submit_request(request):
 def admindashboard(request):
     requests_distinct = (StudentIssueLog.objects.filter(status_from_student = "Requested").values(
         'student__full_name','student__roll_number','form_date','component__name',
-        'quantity_issued').order_by('-form_date'))
+        'component__category','component__quantity',
+        'quantity_issued').order_by('component__category','-form_date'))
                          # .distinct())
     # print(requests_distinct)
     # if request.method == 'POST':
-    return render(request, 'teacher_dash/teacher_dashboard.html',
-                      {'requests_distinct':requests_distinct})
+    # return render(request, 'teacher_dash/teacher_dashboard.html',
+    #                   {'requests_distinct':requests_distinct})
     # return HttpResponse("not a post emthi from admin")
+
+    # Step 2: Group by category
+    grouped_requests = defaultdict(list)
+
+    for req in requests_distinct:
+        grouped_requests[req['component__category']].append(req)
+
+    # print(grouped_requests.items())
+
+    return render(request, 'teacher_dash/teacher_dashboard.html', {
+        'grouped_requests': dict(grouped_requests)})
 
 
 @require_POST
