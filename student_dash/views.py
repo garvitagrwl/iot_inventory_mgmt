@@ -130,3 +130,6 @@ def approved_requests(request):
 
 def rejected_requests(request):
     return render(request,"teacher_dash/rejected.html")
+
+def change_inventory(request):
+    return render(request,"teacher_dash/inventory.html")

@@ -11,4 +11,5 @@ urlpatterns = [
     path("admindash/approved/",views.approved_requests,name="approved_requests"),
     path("admindash/rejected/",views.rejected_requests,name="rejected_requests"),
     path('update-status/', views.update_status, name='update_status'),
+    path('admindash/inventory/', views.change_inventory, name='inventory_page'),
 ]
