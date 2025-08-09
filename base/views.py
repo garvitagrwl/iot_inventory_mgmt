@@ -20,9 +20,9 @@ def loginpage(request):
             return render(request, 'base/login_register.html')
 
         if check_password(password, student.password):
-            request.session['student_id'] = student.id
-            return render(request, 'base/studentdashboard.html',{'student':student})
-
+            request.session['student_id'] = student.id  # custom session
+            # return redirect('studentdash')
+            return render(request,'base/studentdashboard.html',{'student':student})
         else:
             messages.error(request, "Invalid email or password.")
 
