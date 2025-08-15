@@ -21,6 +21,8 @@ class Component(models.Model):
     date_of_purchase = models.DateField()  # Optional: remove auto_now_add if you want to enter manually
 
     @property
+
+    
     def status(self):
         return "Empty" if self.quantity == 0 else "Present"
 

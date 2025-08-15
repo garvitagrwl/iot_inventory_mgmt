@@ -92,38 +92,52 @@ def admindashboard(request):
     return render(request, 'teacher_dash/teacher_dashboard.html', {
         'grouped_requests': dict(grouped_requests)})
 
-
+@require_POST
 @require_POST
 def update_status(request):
     roll_number = request.POST.get("roll_number")
     form_date = request.POST.get("form_date")
     component_name = request.POST.get("component_name")
     action = request.POST.get("action")
-    print("data is :",form_date,action,component_name,roll_number)
+    print("data is:", form_date, action, component_name, roll_number)
 
+    # Get all matching requests (avoids MultipleObjectsReturned error)
+    logs = StudentIssueLog.objects.filter(
+        student__roll_number=roll_number,
+        component__name=component_name,
+        form_date=form_date
+    )
 
-    try:
-        log = StudentIssueLog.objects.get(
-            student__roll_number=roll_number,
-            component__name=component_name,
-            form_date=form_date
-        )
-        print("matching records :",log)
+    if not logs.exists():
+        return HttpResponse("Log not found", status=404)
+
+    for log in logs:
         if action == "approve":
             log.status_from_teacher = "Approved"
             log.status_from_student = "Issued"
             log.issue_date = now().date()
 
+            # Deduct from stock
+            component = log.component
+            if component.quantity >= log.quantity_issued:
+                component.quantity -= log.quantity_issued
+                component.save()
+            else:
+                return HttpResponse(
+                    f"Not enough quantity available for {component.name}",
+                    status=400
+                )
 
         elif action == "reject":
             log.status_from_teacher = "Rejected"
             log.status_from_student = "Rejectedbyteacher"
+            # No quantity deduction for rejection
 
         log.save()
-        return redirect('dash:admindash')
 
-    except StudentIssueLog.DoesNotExist:
-        return HttpResponse("Log not found", status=404)
+    return redirect('dash:admindash')
+
+
 
 def approved_requests(request):
     return render(request,"teacher_dash/approved.html")
