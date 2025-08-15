@@ -12,15 +12,28 @@
 {% block js_filename %}student_dash/js/listcomponent_bycategory.js{% endblock %}
 
 {% block page_content %}
+
 <a href="{% url 'dash:components' %}" class="btn btn-secondary" style="margin-bottom: 15px;">← Back to Categories</a>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;padding: 20px;">
-  <h3 style="margin: 10px 0;">Components in {{ category_name }}</h3>
-  <input type="text" id="searchInput" placeholder="Search component..." onkeyup="filterComponents()" style="width: 300px; padding: 8px;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 20px;">
+  
+  <h3 style="margin: 0;">Components in {{ category_name }}</h3>
+  
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <button id="openAddForm" style="padding: 8px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px;">
+        + Add Component
+    </button>
+
+    <input type="text" id="searchInput" placeholder="Search component..." 
+           onkeyup="filterComponents()" 
+           style="width: 300px; padding: 8px;">
+  </div>
 </div>
 
 
+
 <!-- Components List -->
+
 <div id="componentList" style="width: 95%; margin: auto;">
   {% for item in components %}
     <div class="component-item"
@@ -29,16 +42,17 @@
 
       <div style="flex: 2;"><strong>{{ item.name }}</strong></div>
       <div style="flex: 1;">Available: {{ item.quantity }}</div>
-      <div style="flex: 1;">Status: {{ item.status }}</div>
+      
 
-      <div style="flex: 0.5;" id="control-{{ item.id }}">
+      {% comment %} <div style="flex: 0.5;" id="control-{{ item.id }}">
         {% if item.quantity > 0 %}
-          <!-- <button onclick="startQuantityControl({{ item.id }}, {{ item.quantity }}, '{{ item.component_name|escapejs }}')">Add</button> -->
+          <button onclick="startQuantityControl({{ item.id }}, {{ item.quantity }}, '{{ item.component_name|escapejs }}')">Add</button> 
            <button onclick="startQuantityControl({{ item.id }}, {{ item.quantity }}, '{{ item.name|escapejs }}')">Add</button>
         {% else %}
           <button disabled>Out of Stock</button>
         {% endif %}
       </div>
+    </div> {% endcomment %}
     </div>
   {% endfor %}
 </div>

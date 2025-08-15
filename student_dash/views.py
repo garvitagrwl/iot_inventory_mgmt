@@ -147,3 +147,14 @@ def rejected_requests(request):
 
 def change_inventory(request):
     return render(request,"teacher_dash/inventory.html")
+
+def inv_items(request, category_key):
+    components = Component.objects.filter(category=category_key)
+    category_name = dict(Component.CATEGORY_CHOICES).get(category_key, "Unknown")
+    return render(request, 'teacher_dash/inv_items.html'
+                  , {
+        'components': components,
+        'category_name': category_name,
+    })
+
+

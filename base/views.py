@@ -67,9 +67,9 @@ def studentdashboard(request):
     return render(request, 'base/studentdashboard.html')
 
 
-# def admindashboard(request):
+def admindashboard(request):
 #     if request.method == 'POST':
-#         return render(request, 'base/admin-dashboard.html')
+        return render(request, 'base/admin-dashboard.html')
 #     return HttpResponse("not a post emthi from admin")
 
 
