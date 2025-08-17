@@ -41,19 +41,24 @@
          style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border: 1px solid #ccc; margin-bottom: 10px; border-radius: 8px;">
 
       <div style="flex: 2;"><strong>{{ item.name }}</strong></div>
-      <div style="flex: 1;">Available: {{ item.quantity }}</div>
-      
+      <div style="flex: 1;">Available: {{ item.quantity }}    Status : {{item.componentstatus}}</div>
+<!--        <button type="submit"-->
+<!--                    style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">-->
+<!--                change entity-->
+<!--        </button>-->
+        <form action="{% url 'dash:deletecomp' %}" method="post" style="margin: 0;">
+            {% csrf_token %}
+            <input type="hidden" name="comp_name" value="{{ item.name }}">
+            <input type="hidden" name="comp_category" value="{{ category_name }}">
 
-      {% comment %} <div style="flex: 0.5;" id="control-{{ item.id }}">
-        {% if item.quantity > 0 %}
-          <button onclick="startQuantityControl({{ item.id }}, {{ item.quantity }}, '{{ item.component_name|escapejs }}')">Add</button> 
-           <button onclick="startQuantityControl({{ item.id }}, {{ item.quantity }}, '{{ item.name|escapejs }}')">Add</button>
-        {% else %}
-          <button disabled>Out of Stock</button>
-        {% endif %}
-      </div>
-    </div> {% endcomment %}
+        <button type="submit"
+                style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                Delete
+        </button>
+        </form>
+
     </div>
+
   {% endfor %}
 </div>
 

@@ -157,4 +157,24 @@ def inv_items(request, category_key):
         'category_name': category_name,
     })
 
+def delete_component(request):
+    if request.method == "POST":
+        # data = (request.POST)
+        # for kwy,value in data.items():
+        #     print(f"{kwy}:{value}")
+        component_name = request.POST.get('comp_name')
+        # component_category = request.POST.get('comp_category')
+        # print(component_category,component_name)
+
+
+        try:
+            component = Component.objects.get(name=component_name)
+            component.componentstatus = 'Deleted'
+            component.save()
+        except Component.DoesNotExist:
+            # You might want to add a message here for "not found"
+            messages.error(request, f"Component  not found.")
+
+    return render(request,'teacher_dash/inventory.html')
+
 

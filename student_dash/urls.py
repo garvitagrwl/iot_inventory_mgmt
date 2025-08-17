@@ -13,4 +13,5 @@ urlpatterns = [
     path('update-status/', views.update_status, name='update_status'),
     path('admindash/inventory/', views.change_inventory, name='inventory_page'),
     path('admindash/inventory/category/<str:category_key>/', views.inv_items, name='inv_items'),
+path('delete-component/', views.delete_component, name='deletecomp'),
 ]
