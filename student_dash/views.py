@@ -10,7 +10,9 @@ from student_dash.models import StudentIssueLog
 from django.utils.timezone import now
 from django.views.decorators.http import require_POST
 from collections import defaultdict
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 @student_login_required
 def inventory_request(request):
@@ -31,8 +33,6 @@ def category_items(request, category_key):
         'category_name': category_name,
     })
 
-
-from django.http import JsonResponse
 
 @student_login_required
 def submit_request(request):
@@ -178,3 +178,41 @@ def delete_component(request):
     return render(request,'teacher_dash/inventory.html')
 
 
+
+
+def add_component(request):
+    if request.method == "POST":
+            new_component = request.POST.get("component_name").strip()
+            quantity = int(request.POST.get("component_qty"))
+            category = request.POST.get("component_category").title()
+            date_of_purchase = request.POST.get("dateofpurchase")
+            # print(new_component,quantity,category,date_of_purchase)
+
+            obj, created = Component.objects.get_or_create(
+            name=new_component,
+            defaults={
+            "category": category,
+            "quantity": quantity,
+            "date_of_purchase": date_of_purchase,
+            "componentstatus": "working"
+            }
+            )
+
+            if not created:
+                # If component already exists, add to existing quantity
+                obj.quantity = obj.quantity + quantity
+                # Optional: update category/date if you want
+                obj.category = category
+                obj.date_of_purchase = date_of_purchase
+                obj.save()
+
+            if created:
+                messages.success(request, f"Component '{new_component}' added in category {category}.")
+            else:
+                messages.success(request, f"Component '{new_component}' updated, new total = {obj.quantity}.")
+
+
+            return redirect("teacher_dash/inventory.html")  # change to your list page/
+
+
+    return redirect('teacher_dash/inv_items.html')

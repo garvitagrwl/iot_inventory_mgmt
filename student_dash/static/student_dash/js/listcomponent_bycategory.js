@@ -102,8 +102,7 @@ function getComponentName(id) {
   const item = document.querySelector(`[id="control-${id}"]`).closest(".component-item");
   return item ? item.querySelector("strong").textContent.trim() : `Component ID: ${id}`;
 }
-function removeComponent(id) {
-  let selectedComponents = JSON.parse(localStorage.getItem("selectedComponents") || "[]");
+function removeComponent(id) {  let selectedComponents = JSON.parse(localStorage.getItem("selectedComponents") || "[]");
   selectedComponents = selectedComponents.filter(comp => comp.id !== id);
   localStorage.setItem("selectedComponents", JSON.stringify(selectedComponents));
 
