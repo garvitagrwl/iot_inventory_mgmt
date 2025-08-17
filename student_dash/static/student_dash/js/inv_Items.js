@@ -31,14 +31,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Show form when Add button clicked
-    addButton.addEventListener("click", function (e) {
-        e.preventDefault();
+    addButton.addEventListener("click", function () {
         form.style.display = "block";
+        addButton.style.display = "none";
     });
 
     // Hide form when Cancel clicked
     cancelBtn.addEventListener("click", function () {
         form.reset(); // optional: clears inputs
         form.style.display = "none";
+        addButton.style.display = "inline-block"; 
     });
 });

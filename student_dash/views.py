@@ -184,14 +184,15 @@ def add_component(request):
     if request.method == "POST":
             new_component = request.POST.get("component_name").strip()
             quantity = int(request.POST.get("component_qty"))
-            category = request.POST.get("component_category").title()
+            category = request.POST.get("component_category")
             date_of_purchase = request.POST.get("dateofpurchase")
             # print(new_component,quantity,category,date_of_purchase)
 
             obj, created = Component.objects.get_or_create(
             name=new_component,
+            
             defaults={
-            "category": category,
+            "category":category,
             "quantity": quantity,
             "date_of_purchase": date_of_purchase,
             "componentstatus": "working"
@@ -201,9 +202,7 @@ def add_component(request):
             if not created:
                 # If component already exists, add to existing quantity
                 obj.quantity = obj.quantity + quantity
-                # Optional: update category/date if you want
-                obj.category = category
-                obj.date_of_purchase = date_of_purchase
+
                 obj.save()
 
             if created:
@@ -212,7 +211,7 @@ def add_component(request):
                 messages.success(request, f"Component '{new_component}' updated, new total = {obj.quantity}.")
 
 
-            return redirect("teacher_dash/inventory.html")  # change to your list page/
+            return redirect("dash:admindash")  # change to your list page/
 
 
     return redirect('teacher_dash/inv_items.html')

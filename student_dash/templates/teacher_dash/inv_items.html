@@ -2,9 +2,6 @@
 {% load static %}
 
 
-{% comment %}
-{% extends 'base/studentdashboard.html' %}
-{% endcomment %}
 
 {% block page_title %}Components Items{% endblock %}
 
@@ -18,28 +15,7 @@
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 20px;">
   <h3 style="margin: 0;">Components in {{ category_name }}</h3>
 
-  {% comment %} <div style="display: flex; align-items: center; gap: 10px;">
-    <button id="openAddRow" style="padding: 8px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px;">
-        + Add Component
-    </button> {% endcomment %}
 
-
-{% comment %} <!-- hidden form that shows when button is clicked -->
-<form id="addComponentForm" method="POST" action="{% url 'dash:add_component' %}" style="display:none;margin-top:15px;">
-    {% csrf_token %}
-    <input type="text" name="component_name" placeholder="Component Name" required>
-    <input type="number" name="component_qty" placeholder="Qty" min="0" required>
-
-    <button type="submit"
-            style="padding:5px 10px;background:#4CAF50;color:white;border:none;border-radius:4px;">
-        Save
-    </button>
-
-    <button type="button" id="cancelForm"
-            style="padding:5px 10px;background:#f44336;color:white;border:none;border-radius:4px;">
-        Cancel
-    </button>
-</form> {% endcomment %}
 
     <input type="text" id="searchInput" placeholder="Search component..."
            onkeyup="filterComponents()" 
