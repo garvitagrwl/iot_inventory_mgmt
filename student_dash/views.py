@@ -17,7 +17,7 @@ from django.db.models import Q
 @student_login_required
 def inventory_request(request):
     return render(request, 'student_dash/inventory_request_view.html')
-
+ 
 @student_login_required
 def components(request):
     categories = dict(Component.CATEGORY_CHOICES)
@@ -215,3 +215,53 @@ def add_component(request):
 
 
     return redirect('teacher_dash/inv_items.html')
+
+
+def student_issues(request, roll_number):
+    # Current issued items
+    current_issues = (
+        StudentIssueLog.objects
+        .filter(student__roll_number=roll_number, status_from_student="Issued")
+        .values(
+            'component__name',
+            'component__category',
+            'quantity_issued',
+            'form_date',
+            'issue_date',
+            'return_date',
+            'status_from_student'
+        )
+        .order_by('component__category', '-issue_date')
+    )
+
+    # Previously issued (returned) items
+    previous_issues = (
+        StudentIssueLog.objects
+        .filter(student__roll_number=roll_number, status_from_student="Returned")
+        .values(
+            'component__name',
+            'component__category',
+            'quantity_issued',
+            'form_date',
+            'issue_date',
+            'return_date',
+            'status_from_student'
+        )
+        .order_by('component__category', '-return_date')
+    )
+
+    # Group by category
+    grouped_current = defaultdict(list)
+    grouped_previous = defaultdict(list)
+
+    for item in current_issues:
+        grouped_current[item['component__category']].append(item)
+
+    for item in previous_issues:
+        grouped_previous[item['component__category']].append(item)
+
+    return render(request, "student_dash/issues.html", {
+        "grouped_current": dict(grouped_current),
+        "grouped_previous": dict(grouped_previous),
+        "roll_number": roll_number
+    })

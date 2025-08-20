@@ -7,6 +7,7 @@ urlpatterns = [
     path('login/studentdash/components', views.components, name="components"),
     path('category/<str:category_key>/', views.category_items, name='category_items'),
     path('submit-request/', views.submit_request, name='submit_request'),
+    path("issues/<str:roll_number>/", views.student_issues, name="student_issues"),
     path('admindash/', views.admindashboard, name="admindash"),
     path("admindash/approved/",views.approved_requests,name="approved_requests"),
     path("admindash/rejected/",views.rejected_requests,name="rejected_requests"),

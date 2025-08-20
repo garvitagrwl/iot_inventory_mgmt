@@ -20,7 +20,7 @@
       <h2>IoT Lab</h2>
       <ul>
 <!--        <li><a href="#">Dashboard</a></li>-->
-        <li><a href="my-issued-items.html">My Issued Items</a></li>
+        <li><a href="{% url 'dash:student_issues' student.roll_number %}"> Issued Items</a></li>
 
         <li><a href="{% url 'dash:inventory_request' %}">Request Component</a></li>
 
