@@ -10,6 +10,7 @@ urlpatterns = [
     path("issues/<str:roll_number>/", views.student_issues, name="student_issues"),
     path('admindash/', views.admindashboard, name="admindash"),
     path("admindash/approved/",views.approved_requests,name="approved_requests"),
+    path('return-status/', views.return_status, name='return_status'),
     path("admindash/rejected/",views.rejected_requests,name="rejected_requests"),
     path('update-status/', views.update_status, name='update_status'),
     path('admindash/inventory/', views.change_inventory, name='inventory_page'),

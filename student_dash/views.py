@@ -99,7 +99,7 @@ def update_status(request):
     form_date = request.POST.get("form_date")
     component_name = request.POST.get("component_name")
     action = request.POST.get("action")
-    print("data is:", form_date, action, component_name, roll_number)
+    # print("data is:", form_date, action, component_name, roll_number)
 
     # Get all matching requests (avoids MultipleObjectsReturned error)
     logs = StudentIssueLog.objects.filter(
@@ -140,9 +140,64 @@ def update_status(request):
 
 
 def approved_requests(request):
-    return render(request,"teacher_dash/approved.html")
+    requests_approved = (StudentIssueLog.objects.filter(status_from_student="Issued",
+                                                        status_from_teacher="Approved").values(
+        'student__full_name', 'student__roll_number', 'issue_date', 'component__name',
+        'component__category', 'component__quantity',
+        'quantity_issued').order_by('component__category', '-form_date'))
+
+    # Step 2: Group by category
+    grouped_requests = defaultdict(list)
+
+    for req in requests_approved:
+        grouped_requests[req['component__category']].append(req)
+
+    # print(grouped_requests.items())
+
+    return render(request, 'teacher_dash/approved.html', {
+        'grouped_requests': dict(grouped_requests)})
+
+@require_POST
+def return_status(request):
+    roll_number = request.POST.get("roll_number")
+    component_name = request.POST.get("component_name")
+    issue_date = request.POST.get("issue_date")
+
+    # print("data is:", component_name, roll_number,issue_date)
+
+    # Get all matching requests (avoids MultipleObjectsReturned error)
+    logs = StudentIssueLog.objects.filter(
+        student__roll_number=roll_number,
+        component__name=component_name,
+        issue_date = issue_date,
+        return_date__isnull=True
+    )
+
+    if not logs.exists():
+        return HttpResponse("Log not found", status=404)
+
+    if logs.count() > 1:
+        return HttpResponse("Multiple active logs found for this student and component", status=400)
+
+    # Safe: only one log exists
+    log = logs.first()
+
+    log.status_from_teacher = "Returned"
+    log.status_from_student = "Returned"
+    log.return_date = now().date()
+
+    # Deduct from stock
+    component = log.component
+    component.quantity += log.quantity_issued
+    component.save()
+
+    log.save()
+
+    return redirect("dash:approved_requests")
+
 
 def rejected_requests(request):
+
     return render(request,"teacher_dash/rejected.html")
 
 def change_inventory(request):
