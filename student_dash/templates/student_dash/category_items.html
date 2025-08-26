@@ -1,17 +1,58 @@
-{% extends 'base_layout.html' %}
-{% load static %}
-
-
-{% comment %}
 {% extends 'base/studentdashboard.html' %}
-{% endcomment %}
-
+{% load static %}
 
 {% block page_title %}Components Items{% endblock %}
 
-{% block js_filename %}student_dash/js/listcomponent_bycategory.js{% endblock %}
+{% block js_filename %}
+  <script src="{% static 'student_dash/js/sidebar.js' %}"></script>
+  <script src="{% static 'student_dash/js/listcomponent_bycategory.js' %}"></script>
+{% endblock %}
 
-{% block page_content %}
+{% block page_header %}{% endblock %}
+
+{% block dashboard_content %}
+<style>
+  .right-sidebar {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 350px;
+    height: 100%;
+    background: white;
+    box-shadow: -3px 0 6px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: right 0.3s ease-in-out;
+}
+
+.right-sidebar.open {
+    right: 0;
+}
+
+.request-btn-top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+</style>
+          <button id="toggleSidebarBtn" class="request-btn-top-right" style="position: fixed; top: 20px; right: 20px; z-index: 1001;">
+            Request Components
+        </button>
 <a href="{% url 'dash:components' %}" class="btn btn-secondary" style="margin-bottom: 15px;">← Back to Categories</a>
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;padding: 20px;">
@@ -47,6 +88,20 @@
 <div id="noResult" style="text-align:center; display:none; color:gray; margin-top: 20px;">
   No matching components found.
 </div>
+<div id="requestSidebar" class="right-sidebar">
+            <div class="sidebar-header">
+                <h4>Selected Components</h4>
+                <button id="closeSidebar">&times;</button>
+            </div>
+            <form id="componentRequestForm" method="POST" action="{% url 'dash:submit_request' %}">
+                {% csrf_token %}
+                <div id="form-hidden-fields"></div>
+                <div id="selected-components-list">
+                    <p>No components selected yet.</p>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Confirm Request</button>
+            </form>
+        </div>
 
 {% endblock %}
 
