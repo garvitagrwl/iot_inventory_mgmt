@@ -20,9 +20,9 @@ def loginpage(request):
             return render(request, 'base/login_register.html')
 
         if check_password(password, student.password):
-            request.session['student_id'] = student.id
-            return render(request, 'base/studentdashboard.html',{'student':student})
-
+            request.session['student_id'] = student.id  # custom session
+            # return redirect('studentdash')
+            return render(request,'base/studentdashboard.html',{'student':student})
         else:
             messages.error(request, "Invalid email or password.")
 
@@ -67,9 +67,9 @@ def studentdashboard(request):
     return render(request, 'base/studentdashboard.html')
 
 
-# def admindashboard(request):
+def admindashboard(request):
 #     if request.method == 'POST':
-#         return render(request, 'base/admin-dashboard.html')
+        return render(request, 'base/admin-dashboard.html')
 #     return HttpResponse("not a post emthi from admin")
 
 

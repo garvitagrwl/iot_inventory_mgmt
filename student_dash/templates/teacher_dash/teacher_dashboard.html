@@ -25,32 +25,12 @@
         <p>Manage all student requests and lab inventory.</p>
       </header>
 
-<!--      <section class="admin-cards">-->
-<!--        <div class="admin-card">-->
-<!--          <h3>Pending Form Requests</h3>-->
-
-<!--          {% comment %}<p>{{ requests_distinct.count }}</p>{% endcomment %}-->
-<!--        </div>-->
-<!--&lt;!&ndash;        <div class="admin-card">&ndash;&gt;-->
-<!--&lt;!&ndash;          <h3>Low Stock Alerts</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;          <p>2</p>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="admin-card">&ndash;&gt;-->
-<!--&lt;!&ndash;          <h3>Active Projects</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;          <p>6</p>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--      </section>-->
-
-
-
-
-
-
-
 {% comment "used to check this dicctionsry" %}
 <pre>{{ grouped_requests.items }}</pre>
-      {% endcomment %}
-      <section>
+        {% endcomment %}
+
+
+        <section>
 {% for category, requests in grouped_requests.items %}
 
     <details open style="margin-bottom: 30px;">

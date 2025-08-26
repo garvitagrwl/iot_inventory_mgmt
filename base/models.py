@@ -15,12 +15,22 @@ class Component(models.Model):
         ('Misc', 'Miscellaneous'),
     ]
 
+    COMPONENT_STATUS = [
+        ('Defective','Defective'),
+        ('Deleted', 'Deleted'),
+        ("working",'working')
+    ]
+
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     name = models.CharField(max_length=100)
     quantity = models.IntegerField()
     date_of_purchase = models.DateField()  # Optional: remove auto_now_add if you want to enter manually
+    componentstatus = models.CharField(max_length=20,choices=COMPONENT_STATUS,default="working")
+
 
     @property
+
+    
     def status(self):
         return "Empty" if self.quantity == 0 else "Present"
 

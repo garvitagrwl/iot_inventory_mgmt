@@ -75,7 +75,7 @@
       <div style="flex: 0.5;" id="control-{{ item.id }}">
         {% if item.quantity > 0 %}
           <!-- <button onclick="startQuantityControl({{ item.id }}, {{ item.quantity }}, '{{ item.component_name|escapejs }}')">Add</button> -->
-           <button onclick="startQuantityControl({{ item.id }}, {{ item.quantity }}, '{{ item.name|escapejs }}')">Add</button>
+           <button onclick="startQuantityControl('{{ item.id }}', '{{ item.quantity }}', '{{ item.name|escapejs }}')">Add</button>
         {% else %}
           <button disabled>Out of Stock</button>
         {% endif %}
@@ -104,11 +104,3 @@
         </div>
 
 {% endblock %}
-
-
-
-
-
-
-
-
