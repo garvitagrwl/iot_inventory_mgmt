@@ -21,8 +21,8 @@ def loginpage(request):
 
         if check_password(password, student.password):
             request.session['student_id'] = student.id  # custom session
-            # return redirect('studentdash')
-            return render(request,'base/studentdashboard.html',{'student':student})
+            return redirect('studentdash')
+            # return render(request,'base/studentdashboard.html',{'student':student})
         else:
             messages.error(request, "Invalid email or password.")
 
@@ -64,7 +64,17 @@ def student_reg(request):
 
 @student_login_required
 def studentdashboard(request):
-    return render(request, 'base/studentdashboard.html')
+    # student = request.student   # <-- this is set by your custom decorator
+    student_id = request.session.get("student_id")
+    if not student_id:
+        return redirect("login")  # if not logged in, send back to login
+
+    try:
+        student = Student.objects.get(id=student_id)
+    except Student.DoesNotExist:
+        return redirect("login")
+    return render(request, 'base/studentdashboard.html', {"student": student})
+
 
 
 def admindashboard(request):
@@ -76,4 +86,27 @@ def admindashboard(request):
 def student_logout(request):
     request.session.flush()
     return redirect('login')
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+
+def faculty_login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        if not username or not password:
+            messages.error(request, "Please fill in both fields.")
+            return render(request, 'base/login_register.html')
+            
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:  
+            login(request, user)
+            return redirect('dash:admindash')  
+        else:
+            messages.error(request, "Invalid credentials or not authorized.")
+            return render(request, 'base/login_register.html')
+    
+    return render(request, 'base/login_register.html')
 

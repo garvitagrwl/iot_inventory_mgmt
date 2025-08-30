@@ -1,22 +1,6 @@
 {% extends 'base_layout.html' %}
 {% load static %}
 
-
-{% comment %}
-{ % extends 'base/studentdashboard.html' % }
-{% endcomment %}
-
-
-
-{% comment "directly link to base layout not double linking"%}
-{% block extra_css_files %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'request_component.css' %}">
-{% endblock %}
-{% endcomment %}
-
-
-
 {% block page_title %}Components{% endblock %}
 
 {% block extra_css_files %}
@@ -32,8 +16,8 @@
 <aside class="sidebar">
       <h2>IoT Lab</h2>
       <ul>
-        <li><a href="{% url 'admindash' %}"> back to Dashboard</a></li>
-        <li><a href="{% url 'logout' %}">Logout</a></li>
+        <li><a href="{% url 'dash:admindash' %}"> back to Dashboard</a></li>
+        <li><a href="{% url 'dash:adminlogout' %}">Logout</a></li>
       </ul>
 </aside>
 

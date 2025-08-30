@@ -1,12 +1,16 @@
-{% extends 'base_layout.html' %}
+{% extends 'base/studentdashboard.html' %}
 {% load static %}
 {% block page_title %}Student Isssued Items{% endblock %}
 
-{% block css_filename %}student_dash/issues.css{% endblock %} 
+{% block extra_css_files %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'student_dash/issues.css' %}">
+{% endblock %}
+
     
+{% block page_header %}{% endblock %}
 
-
-{% block page_content %}
+{% block dashboard_content %}
 <div class="container">
     <h2>Issued Items</h2>
 

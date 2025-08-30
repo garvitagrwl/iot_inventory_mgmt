@@ -38,3 +38,30 @@ function renderSelectedComponents() {
     `;
   });
 }
+document.addEventListener('DOMContentLoaded', function() {
+    // Check for clear localStorage cookie
+    if (document.cookie.indexOf('clearLocalStorage=true') !== -1) {
+        localStorage.removeItem('selectedComponents');
+        // Clear the cookie
+        document.cookie = 'clearLocalStorage=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+        console.log('LocalStorage cleared after form submission');
+    }
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('toggleSidebarBtn');
+    const sidebar = document.getElementById('requestSidebar');
+    const closeBtn = document.getElementById('closeSidebar');
+
+    if (!toggleBtn || !sidebar || !closeBtn) return;
+
+    toggleBtn.addEventListener('click', function () {
+        sidebar.classList.add('open');
+        toggleBtn.style.display = 'none';
+        renderSelectedComponents();
+    });
+
+    closeBtn.addEventListener('click', function () {
+        sidebar.classList.remove('open');
+        toggleBtn.style.display = 'block';
+    });
+  });

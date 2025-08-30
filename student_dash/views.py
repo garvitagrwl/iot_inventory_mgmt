@@ -1,8 +1,7 @@
 from django.contrib import  messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect,get_object_or_404
-# from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.models import User
+
 from base.decorators import student_login_required
 from django.contrib.auth.hashers import make_password, check_password
 from base.models import Student, Component
@@ -16,21 +15,33 @@ from django.db.models import Q
 
 @student_login_required
 def inventory_request(request):
-    return render(request, 'student_dash/inventory_request_view.html')
+    # return render(request, 'student_dash/inventory_request_view.html')
+    student = request.student  # comes from decorator
+    return render(request, 'student_dash/inventory_request_view.html', {
+        "student": student
+    })
  
 @student_login_required
 def components(request):
+    # categories = dict(Component.CATEGORY_CHOICES)
+    # return render(request, 'student_dash/inventory_request_view.html', {'categories': categories})
+    student = request.student
     categories = dict(Component.CATEGORY_CHOICES)
-    return render(request, 'student_dash/inventory_request_view.html', {'categories': categories})
+    return render(request, 'student_dash/inventory_request_view.html', {
+        'categories': categories,
+        'student': student
+    })
 
 
 @student_login_required
 def category_items(request, category_key):
+    student = request.student
     components = Component.objects.filter(category=category_key)
     category_name = dict(Component.CATEGORY_CHOICES).get(category_key, "Unknown")
     return render(request, 'student_dash/category_items.html', {
         'components': components,
         'category_name': category_name,
+        'student': student
     })
 
 
@@ -55,7 +66,7 @@ def submit_request(request):
 
             StudentIssueLog.objects.create(
                 student=student,
-                # studentid = student,
+                
                 component=component,
                 quantity_issued=int(qty),
                 form_date = now().date(),
@@ -141,7 +152,7 @@ def update_status(request):
 
 def approved_requests(request):
     requests_approved = (StudentIssueLog.objects.filter(status_from_student="Issued",
-                                                        status_from_teacher="Approved").values(
+     status_from_teacher="Approved").values(
         'student__full_name', 'student__roll_number', 'issue_date', 'component__name',
         'component__category', 'component__quantity',
         'quantity_issued').order_by('component__category', '-form_date'))
@@ -271,8 +282,9 @@ def add_component(request):
 
     return redirect('teacher_dash/inv_items.html')
 
-
+@student_login_required
 def student_issues(request, roll_number):
+    student = request.student
     # Current issued items
     current_issues = (
         StudentIssueLog.objects
@@ -316,7 +328,12 @@ def student_issues(request, roll_number):
         grouped_previous[item['component__category']].append(item)
 
     return render(request, "student_dash/issues.html", {
+        "student": student,
         "grouped_current": dict(grouped_current),
         "grouped_previous": dict(grouped_previous),
         "roll_number": roll_number
     })
+
+def admin_logout(request):
+    request.session.flush()
+    return redirect('login')

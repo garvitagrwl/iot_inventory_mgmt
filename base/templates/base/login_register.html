@@ -64,10 +64,10 @@ isliye yhi likho-->
 
     <div id="faculty"  class="form-section hidden">
       <h2>Faculty Login</h2>
-      <form method="POST" action="{% url 'dash:admindash' %}">
+      <form method="POST" action="{% url 'admindash2' %}">
         {% csrf_token %}
-        <input type="email" placeholder="Faculty Email" required />
-        <input type="password" placeholder="Password" required />
+        <input type="text" name="username" placeholder="Faculty Username" required />
+        <input type="password" name="password" placeholder="Password" required />
         <button type="submit">Login</button>
       </form>
     </div>

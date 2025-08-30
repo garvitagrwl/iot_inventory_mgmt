@@ -4,8 +4,7 @@ from base.models import Student, Component
 # Create your models here.
 class StudentIssueLog(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    studentid = models.ForeignKey(Student,on_delete=models.CASCADE,related_name="sid_fromtable",
-                                  null=True)
+    
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
     quantity_issued = models.PositiveIntegerField()
     form_date = models.DateField(null=True, blank=True)
