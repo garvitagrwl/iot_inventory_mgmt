@@ -80,7 +80,7 @@ LOGIN_URL = '/login/'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-import dj_database_url
+import dj_database_url # type: ignore
 DATABASES =  {
     'default': dj_database_url.config(
         default='postgresql://postgres:gwPXQwWOcyHJBPGfagydhjUwPezbiwuW@shortline.proxy.rlwy.net:50130/railway' 
@@ -135,3 +135,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+from decouple import config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'apikey'  # This is literally 'apikey'
+EMAIL_HOST_PASSWORD = config("SENDGRID_API_KEY")
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'iotlab371@gmail.com'

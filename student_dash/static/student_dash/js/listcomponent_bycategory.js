@@ -1,4 +1,4 @@
-// listcomponent_bycategory.js
+
 
 let selectedComponents = [];
 

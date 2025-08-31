@@ -1,0 +1,19 @@
+{% extends "base_layout.html" %}
+{% load static %}
+
+{% block page_title %}Enter OTP{% endblock %}
+
+{% block page_content %}
+  <h2>Enter OTP</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.code }}
+    <button type="submit">Verify</button>
+  </form>
+
+  <p><a href="{% url 'resend_otp' %}">Resend OTP</a></p>
+
+  {% for m in messages %}
+    <div class="alert">{{ m }}</div>
+  {% endfor %}
+{% endblock %}

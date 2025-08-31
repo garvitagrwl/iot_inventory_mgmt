@@ -1,0 +1,15 @@
+{% extends "base_layout.html" %}
+{% load static %}
+{% block page_title %}Complete Registration{% endblock %}
+{% block page_content %}
+<h2>Complete Registration</h2> 
+<form method="post">
+    {% csrf_token %} 
+    <input type="email" name="email" value="{{ email }}" readonly> {{ form.full_name }} {{ form.roll_number }} {{ form.contact_number }} {{ form.password }} 
+    <button>Register</button> 
+</form>
+ {% for m in messages %}
+ <div class="alert">
+    {{ m }}
+</div>{% endfor %}
+{% endblock %}

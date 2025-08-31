@@ -71,3 +71,19 @@ class Student(models.Model):
 
     def __str__(self):
      return f"{self.full_name} ({self.roll_number})"
+    
+import uuid
+from django.conf import settings
+from django.db import models
+from django.utils import timezone
+
+class StudentOTP(models.Model):
+    student_email  = models.EmailField()
+    code           = models.CharField(max_length=6)
+    created_at     = models.DateTimeField(auto_now_add=True)
+    attempts       = models.PositiveSmallIntegerField(default=0)
+    resent_count   = models.PositiveSmallIntegerField(default=0)
+    session_key    = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    def is_expired(self):
+        return timezone.now() > self.created_at + timezone.timedelta(minutes=10)
